@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/*
+ * Mis Carguitas design tokens. Apple dark mode: pure black canvas, white
+ * type, grouped surfaces in system grays, one accent used sparingly.
+ * Full rationale and usage rules: docs/DESIGN.md
+ */
+:root {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --surface-1: #1c1c1e;   /* grouped cell / card */
+  --surface-2: #2c2c2e;   /* elevated, inputs */
+  --surface-3: #3a3a3c;   /* pressed */
+  --separator: rgba(84, 84, 88, 0.65);
+
+  --label: #ffffff;
+  --label-2: rgba(235, 235, 245, 0.6);
+  --label-3: rgba(235, 235, 245, 0.3);
+
+  --accent: #ffffff;          /* primary actions are white on black */
+  --on-accent: #000000;
+  --green: #30d158;           /* success, delivered, verified */
+  --orange: #ff9f0a;          /* pending, needs you */
+  --red: #ff453a;             /* destructive, errors */
+  --blue: #0a84ff;            /* links, in transit */
+
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 22px;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-separator: var(--separator);
+  --color-label: var(--label);
+  --color-label-2: var(--label-2);
+  --color-label-3: var(--label-3);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-green: var(--green);
+  --color-orange: var(--orange);
+  --color-red: var(--red);
+  --color-blue: var(--blue);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue",
+    "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* iOS-style large title */
+.large-title {
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+  letter-spacing: 0.37px;
+}
+
+/* Bottom tab bar respects the iPhone home indicator */
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 8px);
+}
