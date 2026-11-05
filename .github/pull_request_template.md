@@ -8,6 +8,14 @@ Closes #
 
 <!-- Which Given/When/Then from the spec you demoed, and how. -->
 
+## Constitution checklist (AGENTS.md)
+
+- [ ] The spec has a Technical plan and Tasks, and is updated if behavior changed
+- [ ] `npm run check` is green (format, lint with constitution rules, types, unit tests, migration guard)
+- [ ] `npm run db:test` is green, or this PR has no database change
+- [ ] No constitution lint rule is disabled or downgraded
+- [ ] Docs kept in sync (ROUTES / access.ts, STATE_MACHINES, DESIGN)
+
 ## Security checklist (docs/SECURITY.md)
 
 - [ ] No new client write grants, or each one is column-scoped and justified
