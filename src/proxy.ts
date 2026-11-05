@@ -42,7 +42,11 @@ export async function proxy(request: NextRequest) {
     const { data } = await supabase.auth.getClaims();
     const claims = data?.claims;
     if (claims?.sub && isAppRole(claims.user_role)) {
-      viewer = { role: claims.user_role, aal: claims.aal === "aal2" ? "aal2" : "aal1" };
+      viewer = {
+        role: claims.user_role,
+        aal: claims.aal === "aal2" ? "aal2" : "aal1",
+        mfa: claims.mfa_enrolled === true,
+      };
     }
   }
 

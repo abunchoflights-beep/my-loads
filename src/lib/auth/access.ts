@@ -31,7 +31,15 @@ const RULES: { prefix: string; roles: readonly AppRole[] }[] = [
   { prefix: "/account", roles: ROLES },
 ];
 
-export type Viewer = { role: AppRole; aal: "aal1" | "aal2" } | null;
+/**
+ * What the route gate knows about the caller, from verified JWT claims.
+ * `mfa` is the `mfa_enrolled` claim (S1-05): the user has a verified second
+ * factor, so an `aal1` session must pass the code challenge first.
+ */
+export type Viewer = { role: AppRole; aal: "aal1" | "aal2"; mfa: boolean } | null;
+
+/** The MFA screen: enrollment, the code challenge and step-up all live here. */
+export const SECURITY_PATH = "/account/security";
 
 export type AccessDecision = { kind: "allow" } | { kind: "redirect"; to: string };
 
@@ -60,13 +68,17 @@ export function resolveAccess(pathname: string, viewer: Viewer): AccessDecision 
   if (!viewer) {
     return { kind: "redirect", to: `/login?next=${encodeURIComponent(pathname)}` };
   }
+  // Enrolled in MFA but only passed the password: the code comes first (S1-05).
+  if (viewer.mfa && viewer.aal !== "aal2" && !matches(pathname, SECURITY_PATH)) {
+    return { kind: "redirect", to: `${SECURITY_PATH}?next=${encodeURIComponent(pathname)}` };
+  }
   if (!rule) return { kind: "allow" };
   if (!rule.roles.includes(viewer.role)) {
     return { kind: "redirect", to: ROLE_HOME[viewer.role] };
   }
   // Admin screens need a second factor in this session.
   if (rule.prefix === "/admin" && viewer.aal !== "aal2") {
-    return { kind: "redirect", to: `/account/security?next=${encodeURIComponent(pathname)}` };
+    return { kind: "redirect", to: `${SECURITY_PATH}?next=${encodeURIComponent(pathname)}` };
   }
   return { kind: "allow" };
 }
