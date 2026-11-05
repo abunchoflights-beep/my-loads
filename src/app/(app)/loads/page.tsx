@@ -24,7 +24,9 @@ export default async function LoadBoard() {
   // RLS shows posted loads only to verified carriers.
   const { data } = await supabase
     .from("loads")
-    .select("id, weight_kg, required_body, origin_municipality_code, destination_municipality_code, pickup_on, target_rate_cop, products(name_es)")
+    .select(
+      "id, weight_kg, required_body, origin_municipality_code, destination_municipality_code, pickup_on, target_rate_cop, products(name_es)",
+    )
     .eq("status", "posted")
     .order("pickup_on")
     .limit(50)
@@ -37,9 +39,17 @@ export default async function LoadBoard() {
         <SpecPlaceholder issue="S4-01">Filtros por ruta, fecha, carrocería y peso</SpecPlaceholder>
       </div>
       {viewer.verification !== "verified" ? (
-        <EmptyState icon={<Truck />} title="Verifica tu cuenta y tu vehículo" body="Los fletes se muestran solo a transportadores verificados." />
+        <EmptyState
+          icon={<Truck />}
+          title="Verifica tu cuenta y tu vehículo"
+          body="Los fletes se muestran solo a transportadores verificados."
+        />
       ) : !data?.length ? (
-        <EmptyState icon={<Truck />} title="No hay fletes publicados ahora" body="Te avisamos cuando salga uno en tu ruta (S4-05)." />
+        <EmptyState
+          icon={<Truck />}
+          title="No hay fletes publicados ahora"
+          body="Te avisamos cuando salga uno en tu ruta (S4-05)."
+        />
       ) : (
         <Group>
           {data.map((l) => (

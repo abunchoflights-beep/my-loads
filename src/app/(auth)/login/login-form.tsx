@@ -13,7 +13,11 @@ export function LoginForm({ next }: { next?: string }) {
       {next && <input type="hidden" name="next" value={next} />}
       <Field label="Correo" name="email" type="email" autoComplete="email" required />
       <Field label="Contraseña" name="password" type="password" autoComplete="current-password" required />
-      {state?.error && <p role="alert" className="text-[15px] text-red">{state.error}</p>}
+      {state?.error && (
+        <p role="alert" className="text-[15px] text-red">
+          {state.error}
+        </p>
+      )}
       <Button type="submit" className="w-full" disabled={pending}>
         {pending ? "Ingresando…" : "Ingresar"}
       </Button>

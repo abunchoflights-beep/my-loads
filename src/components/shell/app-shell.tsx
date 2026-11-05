@@ -5,7 +5,12 @@ import { NAV } from "./nav";
 import { SidebarLinks, TabBar } from "./nav-links";
 import { VerificationBanner } from "./verification-banner";
 
-const ROLE_LABEL = { farmer: "Productor", buyer: "Comprador", carrier: "Transportador", admin: "Admin" } as const;
+const ROLE_LABEL = {
+  farmer: "Productor",
+  buyer: "Comprador",
+  carrier: "Transportador",
+  admin: "Admin",
+} as const;
 
 export function AppShell({ viewer, children }: { viewer: SignedInViewer; children: ReactNode }) {
   const items = NAV[viewer.role];

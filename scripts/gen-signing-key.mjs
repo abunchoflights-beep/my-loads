@@ -15,7 +15,10 @@ if (existsSync(target) && !process.argv.includes("--force")) {
 // Run outside the project: inside it the CLI tries to read the (missing)
 // signing_keys_path from config.toml and fails.
 const cli = fileURLToPath(new URL("../node_modules/.bin/supabase", import.meta.url));
-const out = execFileSync(cli, ["gen", "signing-key", "--algorithm", "ES256"], { encoding: "utf8", cwd: tmpdir() });
+const out = execFileSync(cli, ["gen", "signing-key", "--algorithm", "ES256"], {
+  encoding: "utf8",
+  cwd: tmpdir(),
+});
 const jwkLine = out.split("\n").find((l) => l.trim().startsWith("{"));
 if (!jwkLine) throw new Error("Could not read the generated key from the Supabase CLI output.");
 const jwk = JSON.parse(jwkLine);

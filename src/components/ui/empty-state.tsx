@@ -1,6 +1,16 @@
 import type { ReactNode } from "react";
 
-export function EmptyState({ icon, title, body, action }: { icon?: ReactNode; title: string; body?: string; action?: ReactNode }) {
+export function EmptyState({
+  icon,
+  title,
+  body,
+  action,
+}: {
+  icon?: ReactNode;
+  title: string;
+  body?: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center rounded-[var(--radius-lg)] bg-surface-1 px-6 py-14 text-center">
       {icon && <div className="mb-4 text-label-3 [&_svg]:size-10">{icon}</div>}

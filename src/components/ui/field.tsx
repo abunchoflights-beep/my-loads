@@ -1,6 +1,11 @@
 import type { ComponentProps } from "react";
 
-export function Field({ label, hint, error, ...props }: ComponentProps<"input"> & { label: string; hint?: string; error?: string }) {
+export function Field({
+  label,
+  hint,
+  error,
+  ...props
+}: ComponentProps<"input"> & { label: string; hint?: string; error?: string }) {
   const id = props.id ?? props.name;
   return (
     <label htmlFor={id} className="block">

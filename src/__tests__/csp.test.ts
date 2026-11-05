@@ -1,8 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { buildCsp, createNonce } from "@/lib/security/csp";
 
 const directive = (csp: string, name: string) =>
-  csp.split("; ").find((d) => d.startsWith(name + " "))?.slice(name.length + 1);
+  csp
+    .split("; ")
+    .find((d) => d.startsWith(name + " "))
+    ?.slice(name.length + 1);
 
 describe("buildCsp", () => {
   const prod = buildCsp({ nonce: "abc123", isDev: false, supabaseOrigin: "https://x.supabase.co" });

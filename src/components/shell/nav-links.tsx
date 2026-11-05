@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BadgeCheck, House, MapPin, ReceiptText, Route, ShieldCheck, Sprout, Store, Truck, UserRound } from "lucide-react";
+import {
+  BadgeCheck,
+  House,
+  MapPin,
+  ReceiptText,
+  Route,
+  ShieldCheck,
+  Sprout,
+  Store,
+  Truck,
+  UserRound,
+} from "lucide-react";
 import type { NavItem } from "./nav";
 
 const ICONS = {
@@ -56,7 +67,7 @@ export function TabBar({ items }: { items: NavItem[] }) {
   return (
     <nav
       aria-label="Principal"
-      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-separator bg-black/80 backdrop-blur-xl md:hidden"
+      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-separator bg-bg/80 backdrop-blur-xl md:hidden"
     >
       <ul className="mx-auto grid max-w-lg grid-cols-4">
         {items.map((item) => {
