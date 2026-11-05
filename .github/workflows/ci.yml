@@ -77,6 +77,12 @@ jobs:
           git add -N src/lib/supabase/database.types.ts
           git diff --exit-code --stat -- src/lib/supabase/database.types.ts || {
             echo "::error file=src/lib/supabase/database.types.ts::Types are stale. Run npm run db:types, or download the database-types artifact from this run, and commit the file."
+            # Same file for environments that can read logs but not artifacts:
+            # base64 -d | gunzip > src/lib/supabase/database.types.ts
+            echo "database-types.gz.b64 begin"
+            gzip -9 -c src/lib/supabase/database.types.ts | base64 -w 0
+            echo
+            echo "database-types.gz.b64 end"
             exit 1
           }
       - name: Publish the generated types

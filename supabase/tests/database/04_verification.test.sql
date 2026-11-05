@@ -2,7 +2,7 @@
 -- one account per document, KYC files private, no PII in the audit log.
 -- Run with: npm run db:test   (supabase test db, pgTAP)
 begin;
-select plan(23);
+select plan(24);
 
 create schema tests;
 create function tests.new_user(p_id uuid, p_role text, p_name text) returns uuid
@@ -99,13 +99,18 @@ select throws_ok(
      values ('kyc', tests.kyc('c1000000-0000-0000-0000-000000000001', 'document')) $$,
   '42501', null, 'files cannot be added while the review is pending');
 
-delete from storage.objects where bucket_id = 'kyc'
-   and name like 'c1000000-0000-0000-0000-000000000001/%';
+-- Supabase blocks DELETE on storage.objects outside the Storage API, so the
+-- delete rule is checked through its condition and its policy definition.
+select is(private.can_edit_verification(), false,
+  'while pending, the edit condition shared by the kyc policies is false');
+
 reset role;
-select is(
-  (select count(*) from storage.objects where bucket_id = 'kyc'
-      and name like 'c1000000-0000-0000-0000-000000000001/%'),
-  2::bigint, 'files cannot be deleted while the review is pending');
+select ok(
+  exists (select 1 from pg_policies
+           where schemaname = 'storage' and tablename = 'objects'
+             and policyname = 'kyc: owner deletes while editable' and cmd = 'DELETE'
+             and qual like '%can_edit_verification%'),
+  'kyc deletes through the Storage API require an editable verification');
 
 -- ---------------------------------------------------------------------------
 -- farmer: the RUT is optional
@@ -168,10 +173,8 @@ select is(
   (select review_note from public.profile_private where user_id = 'c1000000-0000-0000-0000-000000000001'),
   'La cédula no se lee', 'the user sees the admin''s note');
 
-select lives_ok(
-  $$ delete from storage.objects where bucket_id = 'kyc'
-       and name like 'c1000000-0000-0000-0000-000000000001/document-%' $$,
-  'after a rejection the user can remove the unreadable file');
+select is(private.can_edit_verification(), true,
+  'after a rejection the user can edit and replace files again');
 
 insert into storage.objects (bucket_id, name)
 values ('kyc', tests.kyc('c1000000-0000-0000-0000-000000000001', 'document'));
