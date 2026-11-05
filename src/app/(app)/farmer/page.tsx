@@ -3,16 +3,14 @@ import { LinkButton } from "@/components/ui/button";
 import { Group, Row } from "@/components/ui/group";
 import { PageHeader } from "@/components/ui/page-header";
 import { requireRole } from "@/lib/auth/viewer";
-import { createClient } from "@/lib/supabase/server";
+import { countPublishedListings } from "@/lib/data/listings";
+import { countPendingOrdersForFarmer } from "@/lib/data/orders";
 
 export default async function FarmerHome() {
-  await requireRole("farmer");
-  const supabase = await createClient();
-
-  // RLS scopes both counts to this farmer.
+  const viewer = await requireRole("farmer");
   const [pending, published] = await Promise.all([
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending"),
-    supabase.from("listings").select("id", { count: "exact", head: true }).eq("status", "published"),
+    countPendingOrdersForFarmer(viewer.id),
+    countPublishedListings(viewer.id),
   ]);
 
   return (
@@ -29,13 +27,13 @@ export default async function FarmerHome() {
         <Row
           icon={<ReceiptText className="size-4" />}
           title="Pedidos por responder"
-          trailing={pending.count ?? 0}
+          trailing={pending}
           href="/farmer/orders"
         />
         <Row
           icon={<Sprout className="size-4" />}
           title="Carguitas publicadas"
-          trailing={published.count ?? 0}
+          trailing={published}
           href="/farmer/listings"
         />
         <Row icon={<Tractor className="size-4" />} title="Mis fincas" href="/farmer/farms" />

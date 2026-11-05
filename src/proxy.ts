@@ -3,6 +3,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { buildCsp, createNonce } from "@/lib/security/csp";
 import { hardenCookie } from "@/lib/security/cookies";
 import { isAppRole, resolveAccess, type Viewer } from "@/lib/auth/access";
+import type { Database } from "@/lib/supabase/database.types";
 
 // Runs before every page request:
 //   1. fresh CSP nonce
@@ -24,7 +25,7 @@ export async function proxy(request: NextRequest) {
   let viewer: Viewer = null;
 
   if (supabaseUrl && supabaseKey) {
-    const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    const supabase = createServerClient<Database>(supabaseUrl, supabaseKey, {
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll(cookies, headers) {
