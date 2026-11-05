@@ -19,3 +19,16 @@ export function formatMunicipality(municipality: MunicipalityLabel | null | unde
   const { name, department_name: department } = municipality;
   return name === department ? name : `${name}, ${department}`;
 }
+
+/**
+ * Shows only the last characters of a private value: "••••4050".
+ * Used on read-only verification screens (S1-02) so PII isn't on display.
+ *
+ * @param value - Document number or phone.
+ * @param visible - How many trailing characters stay visible.
+ */
+export function maskTail(value: string | null | undefined, visible = 4): string {
+  if (!value) return "—";
+  const tail = value.slice(-visible);
+  return `••••${tail}`;
+}

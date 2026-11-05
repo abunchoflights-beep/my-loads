@@ -18,6 +18,11 @@ export type ActionResult<T = undefined> =
       readonly error: string;
       readonly field?: string;
       readonly fields?: Readonly<Record<string, string>>;
+      /**
+       * The text the user submitted, so a form can show it again after React
+       * resets it. Never files, passwords or codes.
+       */
+      readonly values?: Readonly<Record<string, string>>;
     };
 
 /**
@@ -44,7 +49,12 @@ export function fail(error: string, field?: string): ActionResult<never> {
  *
  * @param error - Summary shown above the form.
  * @param fields - Field name → Spanish message.
+ * @param values - Submitted text to show again (never files, passwords or codes).
  */
-export function failFields(error: string, fields: Readonly<Record<string, string>>): ActionResult<never> {
-  return { ok: false, error, fields };
+export function failFields(
+  error: string,
+  fields: Readonly<Record<string, string>>,
+  values?: Readonly<Record<string, string>>,
+): ActionResult<never> {
+  return values === undefined ? { ok: false, error, fields } : { ok: false, error, fields, values };
 }
