@@ -91,4 +91,14 @@ describe("resolveAccess", () => {
     });
     expect(resolveAccess("/admin", admin2)).toEqual({ kind: "allow" });
   });
+
+  it("serves municipality search to any signed-in role, never anonymously", () => {
+    expect(resolveAccess("/api/municipalities", null)).toEqual({
+      kind: "redirect",
+      to: "/login?next=%2Fapi%2Fmunicipalities",
+    });
+    for (const viewer of [farmer, buyer, carrier, admin2]) {
+      expect(resolveAccess("/api/municipalities", viewer)).toEqual({ kind: "allow" });
+    }
+  });
 });

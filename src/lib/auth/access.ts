@@ -29,6 +29,8 @@ const RULES: { prefix: string; roles: readonly AppRole[] }[] = [
   { prefix: "/vehicles", roles: ["carrier"] },
   { prefix: "/admin", roles: ["admin"] },
   { prefix: "/account", roles: ROLES },
+  // S1-06: picker suggestions for any signed-in user (anti-scraping: not public).
+  { prefix: "/api/municipalities", roles: ROLES },
 ];
 
 /**
