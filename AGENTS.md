@@ -69,7 +69,7 @@ Define the contract before the logic, in this order:
 
 1. **SQL contract:** the RPC signature, its error codes and the pgTAP tests for allowed and denied actors.
 2. **Input contract:** a zod schema for every Server Action and Route Handler input (`placeOrderSchema`). Parse with `safeParse` before touching the database.
-3. **Output contract:** every Server Action returns `ActionResult<T>` (`{ ok: true; data: T } | { ok: false; error: string; field?: string }`). Route Handlers return explicit status codes: `201` for creates, `204` for no content, `400` for invalid input, `401`/`403` for auth, `404`, `409` for state conflicts. Never `200` with an error body.
+3. **Output contract:** every Server Action returns `ActionResult<T>` from `src/lib/action-result.ts` (`{ ok: true; data: T } | { ok: false; error: string; field?: string; fields?: Record<string, string> }`). Route Handlers return explicit status codes: `201` for creates, `204` for no content, `400` for invalid input, `401`/`403` for auth, `404`, `409` for state conflicts. Never `200` with an error body.
 4. **UI:** built last, on top of the contracts above.
 
 ### 5. Three gates, in order
