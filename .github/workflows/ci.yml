@@ -62,9 +62,34 @@ jobs:
       - name: Signing key for the local stack
         run: npm run db:keys
       - name: Start the local stack with all migrations
-        # Auth (JWT hook) and Storage (bucket policies) are needed; the rest isn't.
-        run: npx supabase start -x realtime,imgproxy,mailpit,studio,edge-runtime,logflare,vector,supavisor,postgres-meta
+        # Auth (JWT hook), Storage (bucket policies) and postgres-meta (type
+        # generation) are needed; the rest isn't.
+        run: npx supabase start -x realtime,imgproxy,mailpit,studio,edge-runtime,logflare,vector,supavisor
       - name: Lint schema
         run: npm run db:lint
       - name: RLS and state machine tests (pgTAP)
         run: npm run db:test
+      - name: Generated types match the migrations (S0-08)
+        if: ${{ !cancelled() }}
+        run: |
+          npm run db:types
+          # -N makes a missing (untracked) file show up in the diff too.
+          git add -N src/lib/supabase/database.types.ts
+          git diff --exit-code --stat -- src/lib/supabase/database.types.ts || {
+            echo "::error file=src/lib/supabase/database.types.ts::Types are stale. Run npm run db:types, or download the database-types artifact from this run, and commit the file."
+            # Same file for environments that can read logs but not artifacts:
+            # base64 -d | gunzip > src/lib/supabase/database.types.ts
+            echo "database-types.gz.b64 begin"
+            gzip -9 -c src/lib/supabase/database.types.ts | base64 -w 0
+            echo
+            echo "database-types.gz.b64 end"
+            exit 1
+          }
+      - name: Publish the generated types
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: database-types
+          path: src/lib/supabase/database.types.ts
+          if-no-files-found: error
+          retention-days: 7

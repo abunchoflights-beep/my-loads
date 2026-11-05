@@ -59,7 +59,8 @@ Legend: **P** public · **S** any signed-in user · **F** farmer · **B** buyer 
 |---|---|---|---|
 | `/account` | S | Profile, verification status, sign out | S1-02 |
 | `/account/verification` | S | Submit identity documents | S1-02 |
-| `/account/security` | S | TOTP enrollment, step-up to `aal2`, sign out everywhere | S1-05 |
+| `/account/security` | S | TOTP enrollment, the code challenge (step-up to `aal2`), remove apps, sign out everywhere | S1-05 |
+| `/api/municipalities?q=` | S, `GET` | Picker suggestions (DANE DIVIPOLA): 200 `{ code, label }[]`, 400 bad query, 401 | S1-06 |
 
 ### Admin · tabs: Panel · Verificar · Mercado · Cuenta
 
@@ -72,7 +73,7 @@ Legend: **P** public · **S** any signed-in user · **F** farmer · **B** buyer 
 
 ## Gates, in order
 
-1. **`src/proxy.ts`** verifies the JWT, then applies `resolveAccess()`: anonymous users go to `/login?next=…`, users in the wrong area go to their role home, admins without `aal2` go to `/account/security?next=…`.
+1. **`src/proxy.ts`** verifies the JWT, then applies `resolveAccess()`: anonymous users go to `/login?next=…`; users with a verified second factor (`mfa_enrolled` claim) whose session is still `aal1` go to `/account/security?next=…` for the code (S1-05); users in the wrong area go to their role home; admins without `aal2` go to `/account/security?next=…`.
 2. **`requireRole()`** at the top of every page in `(app)`. If the proxy matcher is ever misconfigured, the page still refuses.
 3. **Postgres** decides what data comes back. A page that renders for the wrong person still shows nothing, because RLS returns no rows.
 

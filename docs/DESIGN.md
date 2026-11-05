@@ -54,7 +54,10 @@ System font stack (SF Pro on Apple, Roboto on Android). No web fonts: faster on 
 | `Button`, `LinkButton` | `ui/button.tsx` | `primary` white, `secondary` gray, `plain` blue text, `destructive` gray with red text. 48 px tall. |
 | `Group`, `Row` | `ui/group.tsx` | Inset grouped list. Row: icon tile, title, subtitle, trailing value, chevron when it links. |
 | `PageHeader` | `ui/page-header.tsx` | Large title, optional subtitle and action. |
-| `Field` | `ui/field.tsx` | Label above, 48 px input on `surface-2`, hint or error below. `aria-invalid` drives the red ring. |
+| `Field` | `ui/field.tsx` | Label above, 48 px input on `surface-2`, hint (`label-2`) or error below. `aria-invalid` drives the red ring. |
+| `SelectField` | `ui/field.tsx` | Native `<select>` with the Field look: light and accessible on low-end Android. |
+| `FileField` | `ui/field.tsx` | Native file input with the Field look; `onFile` says a file is already on record. |
+| `MunicipalityPicker` | `ui/municipality-picker.tsx` | Native `<input list>` + `<datalist>` filled from `/api/municipalities` as you type (S1-06). The browser draws the suggestions; the DANE code goes in a hidden input. |
 | `StatusPill` | `ui/status-pill.tsx` | Tinted pill for lifecycle states. |
 | `EmptyState` | `ui/empty-state.tsx` | Icon, title, one sentence, one action. |
 | `SpecPlaceholder` | `ui/empty-state.tsx` | Dashed box with the issue ID for screens not built yet. Remove as issues close. |

@@ -104,6 +104,9 @@ reset role;
 update public.profile_private set legal_name = 'Rosa Úsuga', document_type = 'CC',
        document_number = '43111222', phone = '+573104445566'
  where user_id = '11111111-1111-1111-1111-111111111111';
+-- S1-02: the supporting document must be on file before submitting.
+insert into storage.objects (bucket_id, name)
+values ('kyc', '11111111-1111-1111-1111-111111111111/document-0b9f1a2c-3d4e-4f50-8a6b-7c8d9e0f1a2b.pdf');
 select tests.login('11111111-1111-1111-1111-111111111111');
 select is(public.submit_verification()::text, 'pending', 'farmer submits verification');
 

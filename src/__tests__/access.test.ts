@@ -1,11 +1,15 @@
 import { describe, expect, it } from "vite-plus/test";
 import { resolveAccess } from "@/lib/auth/access";
 
-const farmer = { role: "farmer", aal: "aal1" } as const;
-const buyer = { role: "buyer", aal: "aal1" } as const;
-const carrier = { role: "carrier", aal: "aal1" } as const;
-const admin1 = { role: "admin", aal: "aal1" } as const;
-const admin2 = { role: "admin", aal: "aal2" } as const;
+const farmer = { role: "farmer", aal: "aal1", mfa: false } as const;
+const buyer = { role: "buyer", aal: "aal1", mfa: false } as const;
+const carrier = { role: "carrier", aal: "aal1", mfa: false } as const;
+const admin1 = { role: "admin", aal: "aal1", mfa: false } as const;
+const admin2 = { role: "admin", aal: "aal2", mfa: true } as const;
+// Enrolled in MFA (S1-05): aal1 right after the password, aal2 after the code.
+const farmerNeedsCode = { role: "farmer", aal: "aal1", mfa: true } as const;
+const farmerWithCode = { role: "farmer", aal: "aal2", mfa: true } as const;
+const adminNeedsCode = { role: "admin", aal: "aal1", mfa: true } as const;
 
 describe("resolveAccess", () => {
   it("lets anyone see the landing, login and legal pages", () => {
@@ -49,5 +53,52 @@ describe("resolveAccess", () => {
       to: "/account/security?next=%2Fadmin%2Fverifications",
     });
     expect(resolveAccess("/admin/verifications", admin2)).toEqual({ kind: "allow" });
+  });
+
+  it("sends enrolled users to the code challenge before any app screen", () => {
+    expect(resolveAccess("/farmer/listings", farmerNeedsCode)).toEqual({
+      kind: "redirect",
+      to: "/account/security?next=%2Ffarmer%2Flistings",
+    });
+    expect(resolveAccess("/account", farmerNeedsCode)).toEqual({
+      kind: "redirect",
+      to: "/account/security?next=%2Faccount",
+    });
+    expect(resolveAccess("/api/municipalities", farmerNeedsCode)).toEqual({
+      kind: "redirect",
+      to: "/account/security?next=%2Fapi%2Fmunicipalities",
+    });
+  });
+
+  it("lets enrolled users at aal1 reach the challenge, sign out and legal pages", () => {
+    expect(resolveAccess("/account/security", farmerNeedsCode)).toEqual({ kind: "allow" });
+    expect(resolveAccess("/auth/signout", farmerNeedsCode)).toEqual({ kind: "allow" });
+    expect(resolveAccess("/legal/privacy", farmerNeedsCode)).toEqual({ kind: "allow" });
+  });
+
+  it("lets enrolled users through once they passed the code", () => {
+    expect(resolveAccess("/farmer/listings", farmerWithCode)).toEqual({ kind: "allow" });
+  });
+
+  it("does not ask for a code from users without MFA", () => {
+    expect(resolveAccess("/farmer/listings", farmer)).toEqual({ kind: "allow" });
+  });
+
+  it("sends an enrolled admin at aal1 to the challenge, then back", () => {
+    expect(resolveAccess("/admin", adminNeedsCode)).toEqual({
+      kind: "redirect",
+      to: "/account/security?next=%2Fadmin",
+    });
+    expect(resolveAccess("/admin", admin2)).toEqual({ kind: "allow" });
+  });
+
+  it("serves municipality search to any signed-in role, never anonymously", () => {
+    expect(resolveAccess("/api/municipalities", null)).toEqual({
+      kind: "redirect",
+      to: "/login?next=%2Fapi%2Fmunicipalities",
+    });
+    for (const viewer of [farmer, buyer, carrier, admin2]) {
+      expect(resolveAccess("/api/municipalities", viewer)).toEqual({ kind: "allow" });
+    }
   });
 });

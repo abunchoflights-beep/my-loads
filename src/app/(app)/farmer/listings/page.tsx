@@ -5,7 +5,7 @@ import { Group, Row } from "@/components/ui/group";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireRole } from "@/lib/auth/viewer";
-import { createClient } from "@/lib/supabase/server";
+import { listFarmerListings } from "@/lib/data/listings";
 import { formatCop, formatKg } from "@/lib/format";
 
 const STATUS = {
@@ -16,24 +16,9 @@ const STATUS = {
   withdrawn: { label: "Retirada", tone: "neutral" },
 } as const;
 
-type ListingRow = {
-  id: string;
-  status: keyof typeof STATUS;
-  available_kg: string;
-  quantity_kg: string;
-  price_cop_per_kg: number;
-  products: { name_es: string } | null;
-};
-
 export default async function FarmerListings() {
   const viewer = await requireRole("farmer");
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("listings")
-    .select("id, status, available_kg, quantity_kg, price_cop_per_kg, products(name_es)")
-    .eq("farmer_id", viewer.id)
-    .order("created_at", { ascending: false })
-    .returns<ListingRow[]>();
+  const listings = await listFarmerListings(viewer.id);
 
   return (
     <>
@@ -45,7 +30,7 @@ export default async function FarmerListings() {
           </LinkButton>
         }
       />
-      {!data?.length ? (
+      {listings.length === 0 ? (
         <EmptyState
           icon={<Sprout />}
           title="Aún no tienes carguitas"
@@ -54,11 +39,11 @@ export default async function FarmerListings() {
         />
       ) : (
         <Group>
-          {data.map((l) => (
+          {listings.map((l) => (
             <Row
               key={l.id}
-              title={l.products?.name_es ?? "Producto"}
-              subtitle={`${formatKg(l.available_kg)} de ${formatKg(l.quantity_kg)} · ${formatCop(l.price_cop_per_kg)}/kg`}
+              title={l.productName}
+              subtitle={`${formatKg(l.availableKg)} de ${formatKg(l.quantityKg)} · ${formatCop(l.pricePerKg)}/kg`}
               trailing={<StatusPill tone={STATUS[l.status].tone}>{STATUS[l.status].label}</StatusPill>}
             />
           ))}

@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
   // Components / partial prerendering stay off (Next 16 CSP guide).
   poweredByHeader: false,
   reactStrictMode: true,
+  experimental: {
+    // S1-02: the verification form sends up to two 10 MB documents. The proxy
+    // buffers request bodies, so its limit has to match the actions' limit.
+    serverActions: { bodySizeLimit: "21mb" },
+    proxyClientMaxBodySize: "21mb",
+  },
   turbopack: {
     rules: {
       "*.css": {

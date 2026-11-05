@@ -6,10 +6,24 @@
  * `notFound()` still propagate as usual.
  */
 
-/** Success or a user-facing failure. `error` is Spanish copy, never raw database text. */
+/**
+ * Success or a user-facing failure. `error` is Spanish copy, never raw database
+ * text. `field` points at one input; `fields` carries one message per input
+ * when a form has several problems at once.
+ */
 export type ActionResult<T = undefined> =
   | { readonly ok: true; readonly data: T }
-  | { readonly ok: false; readonly error: string; readonly field?: string };
+  | {
+      readonly ok: false;
+      readonly error: string;
+      readonly field?: string;
+      readonly fields?: Readonly<Record<string, string>>;
+      /**
+       * The text the user submitted, so a form can show it again after React
+       * resets it. Never files, passwords or codes.
+       */
+      readonly values?: Readonly<Record<string, string>>;
+    };
 
 /**
  * Builds a successful result.
@@ -28,4 +42,19 @@ export function ok<T>(data: T): ActionResult<T> {
  */
 export function fail(error: string, field?: string): ActionResult<never> {
   return field === undefined ? { ok: false, error } : { ok: false, error, field };
+}
+
+/**
+ * Builds a failed result with one message per form field.
+ *
+ * @param error - Summary shown above the form.
+ * @param fields - Field name → Spanish message.
+ * @param values - Submitted text to show again (never files, passwords or codes).
+ */
+export function failFields(
+  error: string,
+  fields: Readonly<Record<string, string>>,
+  values?: Readonly<Record<string, string>>,
+): ActionResult<never> {
+  return values === undefined ? { ok: false, error, fields } : { ok: false, error, fields, values };
 }

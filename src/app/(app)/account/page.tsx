@@ -4,6 +4,8 @@ import { Group, Row } from "@/components/ui/group";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { requireRole } from "@/lib/auth/viewer";
+import { getMyProfile } from "@/lib/data/profiles";
+import { MunicipalityForm } from "./municipality-form";
 
 const VERIFICATION = {
   unverified: { label: "Sin verificar", tone: "orange" },
@@ -15,10 +17,14 @@ const VERIFICATION = {
 
 export default async function Account() {
   const viewer = await requireRole();
+  const profile = await getMyProfile(viewer.id);
   const v = VERIFICATION[viewer.verification];
   return (
     <>
       <PageHeader title="Cuenta" subtitle={viewer.email ?? undefined} />
+      <Group title="Perfil">
+        <MunicipalityForm current={profile.municipality} />
+      </Group>
       <Group>
         <Row
           icon={<BadgeCheck className="size-4" />}
