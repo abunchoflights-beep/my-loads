@@ -4,12 +4,12 @@ title: "Identity verification (KYC-lite) submission"
 sprint: 1
 milestone: "Sprint 1 · Identity"
 labels: [spec, sprint-1, trust, onboarding]
-status: in-progress
+status: review
 ---
 
 # S1-02 · Identity verification (KYC-lite) submission
 
-**Status:** In progress
+**Status:** Built and tested (pgTAP 04, unit tests). Demo pending: a real upload against a local stack (needs Docker).
 
 ## Requirement
 
@@ -31,9 +31,9 @@ As a user, I submit my legal name, document, phone and a supporting file so the 
 ## Acceptance criteria
 
 - [x] `profile_private`, `submit_verification()`, `kyc` bucket policies
-- [ ] `/account/verification` form with upload (PDF/JPG/PNG, 10 MB)
-- [ ] Carriers also upload driver's license; farmers optionally RUT
-- [ ] pgTAP: duplicate document rejected, frozen PII after submit
+- [x] `/account/verification` form with upload (PDF/JPG/PNG, 10 MB)
+- [x] Carriers also upload driver's license; farmers optionally RUT
+- [x] pgTAP: duplicate document rejected, frozen PII after submit
 
 ## Technical plan
 
@@ -53,13 +53,13 @@ As a user, I submit my legal name, document, phone and a supporting file so the 
 
 ## Tasks
 
-- [ ] 1. Migration: `can_edit_verification()`, new `submit_verification()`, kyc insert and delete policies
-- [ ] 2. pgTAP `04_verification.test.sql`: file rules per role, duplicate document, frozen PII and files after submit, rejected → resubmit, owner/admin-only reads, no PII in the audit log
-- [ ] 3. `npm run db:types`
-- [ ] 4. `file-metadata.ts` + unit tests; zod schemas + unit tests; data layer
-- [ ] 5. `submitVerification` Server Action, Next body limits
-- [ ] 6. UI: form, read-only summary, rejected note; `SelectField`, `FileField`
-- [ ] 7. Docs: DESIGN (new fields), SECURITY §6 (KYC metadata), ActionResult `fields` in AGENTS.md, SPRINTS, this spec
+- [x] 1. Migration: `can_edit_verification()`, new `submit_verification()`, kyc insert and delete policies
+- [x] 2. pgTAP `04_verification.test.sql`: file rules per role, duplicate document, frozen PII and files after submit, rejected → resubmit, owner/admin-only reads, no PII in the audit log
+- [x] 3. `npm run db:types`
+- [x] 4. `file-metadata.ts` + unit tests; zod schemas + unit tests; data layer
+- [x] 5. `submitVerification` Server Action, Next body limits
+- [x] 6. UI: form, read-only summary, rejected note; `SelectField`, `FileField`
+- [x] 7. Docs: DESIGN (new fields), SECURITY §6 (KYC metadata), ActionResult `fields` in AGENTS.md, SPRINTS, this spec
 
 ## Notes
 

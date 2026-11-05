@@ -81,7 +81,7 @@ Vehicle eligibility: owned by the bidder, active, verified, capacity ≥ load we
 ```mermaid
 stateDiagram-v2
   [*] --> unverified: signup
-  unverified --> pending: submit_verification (owner, all fields present)
+  unverified --> pending: submit_verification (owner, all fields and files present)
   rejected --> pending: submit_verification
   pending --> verified: admin_review_verification(approve) (MFA admin, not self)
   pending --> rejected: admin_review_verification(reject, note)
@@ -89,4 +89,4 @@ stateDiagram-v2
   suspended --> verified: admin_set_suspended(false, note)
 ```
 
-PII in `profile_private` is editable only while `unverified` or `rejected`.
+PII in `profile_private` and files in `kyc/{uid}/` are editable only while `unverified` or `rejected`. `submit_verification()` needs legal name, document type and number, phone, a `document` file and, for carriers, a `license` file; otherwise `VERIFICATION_INCOMPLETE` with the missing fields in `DETAIL` (S1-02).

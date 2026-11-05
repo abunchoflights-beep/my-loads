@@ -4,12 +4,12 @@ title: "Typed Supabase client from generated database types"
 sprint: 0
 milestone: "Sprint 0 · Foundations"
 labels: [spec, sprint-0, dx, database]
-status: in-progress
+status: done
 ---
 
 # S0-08 · Typed Supabase client from generated database types
 
-**Status:** In progress
+**Status:** Done. Types generated in CI and committed; a wrong column fails `npm run typecheck`.
 
 ## Requirement
 
@@ -27,10 +27,10 @@ As a developer, queries and RPC calls are type-checked against the real schema, 
 
 ## Acceptance criteria
 
-- [ ] Generated types committed
-- [ ] `createClient<Database>()`
-- [ ] Remove the hand-written row types in pages
-- [ ] CI check: regenerate and `git diff --exit-code`
+- [x] Generated types committed
+- [x] `createClient<Database>()`
+- [x] Remove the hand-written row types in pages
+- [x] CI check: regenerate and `git diff --exit-code`
 
 ## Technical plan
 
@@ -49,12 +49,12 @@ As a developer, queries and RPC calls are type-checked against the real schema, 
 
 ## Tasks
 
-- [ ] 1. CI: regenerate types, diff check, upload artifact
-- [ ] 2. Commit the generated `database.types.ts` (from the CI artifact)
-- [ ] 3. `createServerClient<Database>()` in the server client and the proxy
-- [ ] 4. `src/lib/data/` for listings, orders and loads; pages call it; hand-written row types removed
-- [ ] 5. Prove it: a query with a wrong column fails `npm run typecheck`
-- [ ] 6. Docs: README scripts, ARCHITECTURE layout, SPRINTS status, this spec
+- [x] 1. CI: regenerate types, diff check, upload artifact
+- [x] 2. Commit the generated `database.types.ts` (from the CI artifact)
+- [x] 3. `createServerClient<Database>()` in the server client and the proxy
+- [x] 4. `src/lib/data/` for listings, orders and loads; pages call it; hand-written row types removed
+- [x] 5. Prove it: a query with a wrong column fails `npm run typecheck`
+- [x] 6. Docs: README scripts, ARCHITECTURE layout, SPRINTS status, this spec
 
 ## Notes
 

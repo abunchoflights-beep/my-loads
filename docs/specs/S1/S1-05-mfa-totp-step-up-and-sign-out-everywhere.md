@@ -4,12 +4,12 @@ title: "MFA (TOTP), step-up and sign out everywhere"
 sprint: 1
 milestone: "Sprint 1 · Identity"
 labels: [spec, sprint-1, auth, security]
-status: in-progress
+status: partial
 ---
 
 # S1-05 · MFA (TOTP), step-up and sign out everywhere
 
-**Status:** In progress
+**Status:** Built and tested (pgTAP 05, route tests). Open: E2E admin aal1/aal2 needs the Playwright harness (S0-09), and a demo with a real authenticator app.
 
 ## Requirement
 
@@ -29,8 +29,8 @@ As a user, I can protect my account with an authenticator app. As an admin, I mu
 
 ## Acceptance criteria
 
-- [ ] Enroll, challenge, verify, unenroll screens
-- [ ] Recovery codes or second factor guidance
+- [x] Enroll, challenge, verify, unenroll screens
+- [x] Recovery codes or second factor guidance
 - [ ] E2E: admin blocked at aal1, allowed at aal2
 
 ## Technical plan
@@ -51,13 +51,13 @@ As a user, I can protect my account with an authenticator app. As an admin, I mu
 
 ## Tasks
 
-- [ ] 1. Migration: `mfa_enrolled` claim in the access token hook
-- [ ] 2. pgTAP `05_mfa.test.sql`: claim false/true per verified factor, other users' factors don't count, role and verification claims kept, admin reads need `aal2`
-- [ ] 3. `npm run db:types`
-- [ ] 4. `access.ts` step-up rule + unit tests; `getViewer()` reads the claim
-- [ ] 5. `src/lib/auth/mfa.ts`, schemas + unit tests, Server Actions
-- [ ] 6. UI: challenge, enroll (QR + code), factor list with remove, sign out everywhere
-- [ ] 7. Docs: ROUTES, SECURITY §2 (step-up for enrolled users), DESIGN, SPRINTS, this spec
+- [x] 1. Migration: `mfa_enrolled` claim in the access token hook
+- [x] 2. pgTAP `05_mfa.test.sql`: claim false/true per verified factor, other users' factors don't count, role and verification claims kept, admin reads need `aal2`
+- [x] 3. `npm run db:types`
+- [x] 4. `access.ts` step-up rule + unit tests; `getViewer()` reads the claim
+- [x] 5. `src/lib/auth/mfa.ts`, schemas + unit tests, Server Actions
+- [x] 6. UI: challenge, enroll (QR + code), factor list with remove, sign out everywhere
+- [x] 7. Docs: ROUTES, SECURITY §2 (step-up for enrolled users), DESIGN, SPRINTS, this spec
 
 ## Notes
 

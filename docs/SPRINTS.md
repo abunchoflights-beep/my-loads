@@ -11,6 +11,8 @@ Two-week sprints, spec-driven. Each issue in `docs/specs/S*/` has four parts:
 
 Dates assume we start Monday, Nov 2, 2026 and stop for the holidays from Dec 24 to Jan 11. Move them if the team starts later.
 
+Status values: `todo`, `partial` (some acceptance boxes open), `review` (built and tested, waiting for a demo and merge), `done`.
+
 ## Definition of ready
 
 - The spec has all four parts and no open question blocking it (see REQUIREMENTS, open questions).
@@ -54,7 +56,7 @@ Dates assume we start Monday, Nov 2, 2026 and stop for the holidays from Dec 24 
 | S0-05 | [Design system and role-based app shell](specs/S0/S0-05-design-system-and-role-based-app-shell.md) | ui, design | done |
 | S0-06 | [RLS and RPC test harness (pgTAP) in CI](specs/S0/S0-06-rls-and-rpc-test-harness-pgtap-in-ci.md) | database, security, testing | done |
 | S0-07 | [Legal: data policy (Ley 1581), terms, consent capture](specs/S0/S0-07-legal-data-policy-ley-1581-terms-consent-capture.md) | legal, privacy | todo |
-| S0-08 | [Typed Supabase client from generated database types](specs/S0/S0-08-typed-supabase-client-from-generated-database-type.md) | dx, database | todo |
+| S0-08 | [Typed Supabase client from generated database types](specs/S0/S0-08-typed-supabase-client-from-generated-database-type.md) | dx, database | done |
 
 ## Sprint 1 · Identity
 
@@ -64,11 +66,11 @@ Dates assume we start Monday, Nov 2, 2026 and stop for the holidays from Dec 24 
 | ID | Issue | Labels | Status |
 |---|---|---|---|
 | S1-01 | [Sign up with a role, confirm email, sign in and out](specs/S1/S1-01-sign-up-with-a-role-confirm-email-sign-in-and-out.md) | auth, onboarding | partial |
-| S1-02 | [Identity verification (KYC-lite) submission](specs/S1/S1-02-identity-verification-kyc-lite-submission.md) | trust, onboarding | todo |
+| S1-02 | [Identity verification (KYC-lite) submission](specs/S1/S1-02-identity-verification-kyc-lite-submission.md) | trust, onboarding | review |
 | S1-03 | [Admin verification queue (people and vehicles)](specs/S1/S1-03-admin-verification-queue-people-and-vehicles.md) | admin, trust | todo |
 | S1-04 | [Farms, delivery locations and vehicles](specs/S1/S1-04-farms-delivery-locations-and-vehicles.md) | onboarding | partial |
-| S1-05 | [MFA (TOTP), step-up and sign out everywhere](specs/S1/S1-05-mfa-totp-step-up-and-sign-out-everywhere.md) | auth, security | todo |
-| S1-06 | [DANE municipalities table and picker](specs/S1/S1-06-dane-municipalities-table-and-picker.md) | data, ui | todo |
+| S1-05 | [MFA (TOTP), step-up and sign out everywhere](specs/S1/S1-05-mfa-totp-step-up-and-sign-out-everywhere.md) | auth, security | partial |
+| S1-06 | [DANE municipalities table and picker](specs/S1/S1-06-dane-municipalities-table-and-picker.md) | data, ui | review |
 | S1-07 | [Password reset](specs/S1/S1-07-password-reset.md) | auth | todo |
 
 ## Sprint 2 · Listings

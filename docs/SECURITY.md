@@ -31,8 +31,8 @@ The app uses a **backend-for-frontend** model: the browser never talks to Supaba
 2. JWTs are signed with an **asymmetric ES256 key** (`signing_keys_path`). The server verifies them with `getClaims()` against the JWKS, so verification needs no shared secret.
 3. Auth cookies are always `HttpOnly`, `SameSite=Lax`, `Secure` in production, `Path=/` (`src/lib/security/cookies.ts`). No JavaScript can read them, and there is no browser Supabase client.
 4. **Never authorize with `getSession()`** on the server: it decodes the cookie without verifying it. Use `getClaims()` (verifies the signature) or `getUser()` (asks the Auth server).
-5. The custom access token hook adds `user_role` and `verification` claims. These are for **routing and UX only**. RLS and RPCs read the role and verification from the database (`private.my_role()`, `private.is_verified()`), so a 15-minute-old claim can never grant more than the database says now.
-6. Admin powers require `aal2` (TOTP verified in this session). Enforced in three places: proxy redirect, `private.is_admin()` in policies, and admin RPCs.
+5. The custom access token hook adds `user_role`, `verification` and `mfa_enrolled` claims. These are for **routing and UX only**. RLS and RPCs read the role and verification from the database (`private.my_role()`, `private.is_verified()`), so a 15-minute-old claim can never grant more than the database says now.
+6. Admin powers require `aal2` (TOTP verified in this session). Enforced in three places: proxy redirect, `private.is_admin()` in policies, and admin RPCs. Any user with a verified factor is sent to the code challenge after the password on every app route (`mfa_enrolled` + `aal1`, S1-05). Removing a factor always verifies a current code in the same request, and admins can't remove their last one.
 7. Responses that set auth cookies carry `Cache-Control: private, no-store` (passed through from `@supabase/ssr`) so a CDN can't serve one user's session to another.
 8. Sign-out is `POST` only. "Sign out everywhere" uses `scope: 'global'` (S1-05).
 9. Login errors are identical for "no such user" and "wrong password". Signup returns the same message whether or not the email exists.
@@ -103,7 +103,7 @@ Next step (S8-04): try `require-trusted-types-for 'script'` once we confirm Reac
 | `kyc` | `{user_id}/…` | the owner | the owner and MFA admins |
 | `pod` (proof of delivery) | `{load_id}/…` | the booked carrier while picked up / delivered | load parties and admins |
 
-All buckets are private, size-limited and MIME-allowlisted. Images are re-encoded server-side to WebP and stripped of EXIF (GPS!) before upload (S2-02).
+All buckets are private, size-limited and MIME-allowlisted. The server decides a file's type from its first bytes, never from its name or the browser's MIME type (`sniffUpload`). KYC images are stripped of EXIF (GPS!), XMP, IPTC and comments before upload without re-encoding (`stripImageMetadata`, S1-02); listing photos are also re-encoded to WebP (S2-02). KYC uploads follow a fixed naming scheme and freeze, like the PII, once a verification is submitted.
 
 ## 7. Secrets
 

@@ -4,12 +4,12 @@ title: "DANE municipalities table and picker"
 sprint: 1
 milestone: "Sprint 1 · Identity"
 labels: [spec, sprint-1, data, ui]
-status: in-progress
+status: review
 ---
 
 # S1-06 · DANE municipalities table and picker
 
-**Status:** In progress
+**Status:** Built and tested (pgTAP 03, unit tests). Demo pending: the picker on `/account` against a local stack (needs Docker).
 
 ## Requirement
 
@@ -27,9 +27,9 @@ As any user, I pick my municipality from a searchable list instead of typing it,
 
 ## Acceptance criteria
 
-- [ ] `municipalities` table (code, name, department_code, department_name, centroid lat/lng) loaded by migration
-- [ ] Replace `src/lib/format/municipalities.ts` with DB lookups
-- [ ] Accent-insensitive search
+- [x] `municipalities` table (code, name, department_code, department_name, centroid lat/lng) loaded by migration
+- [x] Replace `src/lib/format/municipalities.ts` with DB lookups
+- [x] Accent-insensitive search
 
 ## Technical plan
 
@@ -49,14 +49,14 @@ As any user, I pick my municipality from a searchable list instead of typing it,
 
 ## Tasks
 
-- [ ] 1. Migration: table, normalize function, data, search RPC, grants, FKs
-- [ ] 2. pgTAP `03_municipalities.test.sql`: row count, accent-insensitive search and ranking, anon/authenticated read, no client writes, FK rejects unknown codes
-- [ ] 3. `npm run db:types`
-- [ ] 4. Data layer + schemas; market and load board use FK embeds; delete `src/lib/format/municipalities.ts`
-- [ ] 5. `GET /api/municipalities` route handler + access rule
-- [ ] 6. `MunicipalityPicker` + "Tu municipio" on `/account` with `updateMunicipality`
-- [ ] 7. Unit tests: `formatMunicipality`, search schema, route access
-- [ ] 8. Docs: ROUTES, DESIGN (picker), ARCHITECTURE (table, attribution), SPRINTS, this spec
+- [x] 1. Migration: table, normalize function, data, search RPC, grants, FKs
+- [x] 2. pgTAP `03_municipalities.test.sql`: row count, accent-insensitive search and ranking, anon/authenticated read, no client writes, FK rejects unknown codes
+- [x] 3. `npm run db:types`
+- [x] 4. Data layer + schemas; market and load board use FK embeds; delete `src/lib/format/municipalities.ts`
+- [x] 5. `GET /api/municipalities` route handler + access rule
+- [x] 6. `MunicipalityPicker` + "Tu municipio" on `/account` with `updateMunicipality`
+- [x] 7. Unit tests: `formatMunicipality`, search schema, route access
+- [x] 8. Docs: ROUTES, DESIGN (picker), ARCHITECTURE (table, attribution), SPRINTS, this spec
 
 ## Notes
 
