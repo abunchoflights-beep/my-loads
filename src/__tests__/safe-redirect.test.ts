@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { safeNextPath } from "@/lib/security/safe-redirect";
 
 describe("safeNextPath", () => {
@@ -18,6 +18,6 @@ describe("safeNextPath", () => {
     "",
     null,
   ])("rejects %s", (input) => {
-    expect(safeNextPath(input as string | null, "/home")).toBe("/home");
+    expect(safeNextPath(input, "/home")).toBe("/home");
   });
 });

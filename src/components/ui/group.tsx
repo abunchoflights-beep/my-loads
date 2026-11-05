@@ -7,7 +7,9 @@ export function Group({ title, footer, children }: { title?: string; footer?: st
   return (
     <section className="mb-8">
       {title && <h2 className="px-4 pb-2 text-[13px] uppercase tracking-wide text-label-2">{title}</h2>}
-      <div className="overflow-hidden rounded-[var(--radius)] bg-surface-1 divide-y divide-separator">{children}</div>
+      <div className="overflow-hidden rounded-[var(--radius)] bg-surface-1 divide-y divide-separator">
+        {children}
+      </div>
       {footer && <p className="px-4 pt-2 text-[13px] text-label-2">{footer}</p>}
     </section>
   );
@@ -28,7 +30,9 @@ export function Row({
 }) {
   const body = (
     <div className="flex min-h-[52px] items-center gap-3 px-4 py-3">
-      {icon && <span className="grid size-8 place-items-center rounded-[8px] bg-surface-2 text-label">{icon}</span>}
+      {icon && (
+        <span className="grid size-8 place-items-center rounded-[8px] bg-surface-2 text-label">{icon}</span>
+      )}
       <div className="min-w-0 flex-1">
         <div className="truncate text-[17px]">{title}</div>
         {subtitle && <div className="truncate text-[15px] text-label-2">{subtitle}</div>}

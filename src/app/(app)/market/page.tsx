@@ -23,7 +23,9 @@ export default async function Market() {
   // RLS returns only published, in-window lots (plus the viewer's own).
   const { data } = await supabase
     .from("listings")
-    .select("id, available_kg, price_cop_per_kg, quality_grade, municipality_code, available_until, products(name_es)")
+    .select(
+      "id, available_kg, price_cop_per_kg, quality_grade, municipality_code, available_until, products(name_es)",
+    )
     .eq("status", "published")
     .gte("available_until", new Date().toISOString().slice(0, 10))
     .order("published_at", { ascending: false })
@@ -37,7 +39,11 @@ export default async function Market() {
         <SpecPlaceholder issue="S2-03">Filtros por producto, municipio, calidad y precio</SpecPlaceholder>
       </div>
       {!data?.length ? (
-        <EmptyState icon={<Store />} title="No hay cosecha publicada" body="Vuelve más tarde o activa alertas por producto (S2-05)." />
+        <EmptyState
+          icon={<Store />}
+          title="No hay cosecha publicada"
+          body="Vuelve más tarde o activa alertas por producto (S2-05)."
+        />
       ) : (
         <Group>
           {data.map((l) => (

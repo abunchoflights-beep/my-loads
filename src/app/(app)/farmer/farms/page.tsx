@@ -6,7 +6,10 @@ export default async function Farms() {
   await requireRole("farmer");
   return (
     <>
-      <PageHeader title="Mis fincas" subtitle="La ubicación exacta solo la ve el transportador que contrates." />
+      <PageHeader
+        title="Mis fincas"
+        subtitle="La ubicación exacta solo la ve el transportador que contrates."
+      />
       <SpecPlaceholder issue="S1-04">Registro de fincas</SpecPlaceholder>
     </>
   );

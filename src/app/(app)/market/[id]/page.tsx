@@ -11,7 +11,9 @@ export default async function ListingDetail({ params }: PageProps<"/market/[id]"
   return (
     <>
       <PageHeader title="Detalle de la carguita" />
-      <SpecPlaceholder issue="S2-04 · S3-01">Detalle, fotos, productor y formulario de pedido</SpecPlaceholder>
+      <SpecPlaceholder issue="S2-04 · S3-01">
+        Detalle, fotos, productor y formulario de pedido
+      </SpecPlaceholder>
     </>
   );
 }

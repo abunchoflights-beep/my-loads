@@ -33,9 +33,7 @@ const RULES: { prefix: string; roles: readonly AppRole[] }[] = [
 
 export type Viewer = { role: AppRole; aal: "aal1" | "aal2" } | null;
 
-export type AccessDecision =
-  | { kind: "allow" }
-  | { kind: "redirect"; to: string };
+export type AccessDecision = { kind: "allow" } | { kind: "redirect"; to: string };
 
 function matches(pathname: string, prefix: string) {
   return pathname === prefix || pathname.startsWith(prefix + "/");
@@ -54,7 +52,7 @@ export function resolveAccess(pathname: string, viewer: Viewer): AccessDecision 
     return { kind: "allow" };
   }
 
-  const rule = RULES.filter((r) => matches(pathname, r.prefix)).sort(
+  const rule = RULES.filter((r) => matches(pathname, r.prefix)).toSorted(
     (a, b) => b.prefix.length - a.prefix.length,
   )[0];
 

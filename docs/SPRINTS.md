@@ -15,12 +15,13 @@ Dates assume we start Monday, Nov 2, 2026 and stop for the holidays from Dec 24 
 
 - The spec has all four parts and no open question blocking it (see REQUIREMENTS, open questions).
 - Dependencies are done or in the same sprint.
+- Before coding starts, the spec has a **Technical plan** and a **Tasks** list (template: `specs/_TEMPLATE.md`, workflow: `AGENTS.md`).
 
 ## Definition of done
 
 - Every acceptance box is ticked.
 - Every invariant has a test (pgTAP for the database, vitest for code).
-- CI green: lint, typecheck, unit tests, build, db lint, pgTAP.
+- CI green: `vp check` (format, lint with constitution rules, types), unit tests, migration guard, build, db lint, pgTAP.
 - The security checklist in the PR template is answered.
 - Screens checked on a 390 px wide phone viewport, and copy reviewed in Spanish.
 - `SpecPlaceholder` removed from the screens the issue covers.

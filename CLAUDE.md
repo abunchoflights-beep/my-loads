@@ -1,29 +1,29 @@
 @AGENTS.md
 
-# Mis Carguitas: notes for coding agents
+# Claude Code notes
 
-Read `docs/SECURITY.md` before touching auth, migrations, headers or storage. Read the issue's spec in `docs/specs/` before building a feature.
+`AGENTS.md` above is the project constitution. Everything in it applies to you. This file only adds what is specific to Claude Code.
 
-## Hard rules
+## Before you start
 
-- No Supabase client in browser code. Data access happens in Server Components, Server Actions and Route Handlers through `src/lib/supabase/server.ts`.
-- Authorize on the server with `getViewer()` / `requireRole()` (built on `getClaims()`). Never use `getSession()` for authorization.
-- No service-role key in this app.
-- New tables: enable RLS, revoke from `anon, authenticated`, grant explicitly (column-level for updates).
-- Lifecycle changes (orders, loads, bids, verification) only through `SECURITY DEFINER` RPCs with `search_path = ''`. Add pgTAP tests for the allowed actor and denied actors.
-- Migrations are append-only once merged.
-- Money is `bigint` COP computed in SQL. Weights are `numeric(12,2)` kg.
-- Farm and delivery coordinates, addresses and phones are need-to-know (see SECURITY §3, rules 7 and 8).
-- Every page renders dynamically (nonce CSP). Don't enable Cache Components / PPR or add inline scripts.
-- UI copy in Spanish (es-CO, tú). Code, routes and tables in English.
-- Colors only from the tokens in `src/app/globals.css`.
+1. Name the spec you are working on (`docs/specs/Sx/Sx-yy-*.md`). No spec, no code: write or update the spec first and get it approved.
+2. Read `docs/SECURITY.md` before touching auth, migrations, headers or storage.
+3. For anything bigger than a small fix, write the Technical plan and Tasks sections in the spec before editing code.
 
-## Commands
+## Hooks in `.claude/settings.json`
 
-```bash
-npm run check      # lint + typecheck + unit tests
-npm run db:reset   # rebuild local DB from migrations
-npm run db:test    # pgTAP
-```
+These run on every session in this repo. Work with them, never around them.
 
-Keep `src/lib/auth/access.ts` and `docs/ROUTES.md` in sync. Keep `docs/specs/STATE_MACHINES.md` in sync with the RPCs.
+| Hook | When | What it does |
+|---|---|---|
+| `guard-files.mjs` | Before Edit/Write | Denies edits to migrations already on `origin/main` and to `.env*` files. Create a new migration instead; ask the user to set secrets. |
+| `lint-file.mjs` | After Edit/Write | Formats the file with Oxfmt, then lints and type-checks it with the constitution rules. Fix what it reports before moving on. |
+| `verify.mjs` | When you stop | If code changed, runs `npm run check` and blocks until it is green. |
+
+If a hook blocks you and you believe the rule is wrong, stop and explain to the user. Don't disable hooks, edit `.claude/settings.json` or add `oxlint-disable` for constitution rules to get past one.
+
+## Working style
+
+- Small, linear steps that follow the spec's task list. Commit messages reference the spec ID (`feat(S2-02): ...`).
+- Docker may be missing in cloud sessions. When you can't run `npm run db:test`, say so plainly instead of claiming the database work is verified.
+- `backlog.md` at the repo root is a local planning file (gitignored). Read it for sprint context; don't commit it.

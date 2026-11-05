@@ -10,7 +10,9 @@ const tones: Record<Tone, string> = {
 
 export function StatusPill({ tone = "neutral", children }: { tone?: Tone; children: React.ReactNode }) {
   return (
-    <span className={`inline-flex h-6 items-center rounded-full px-2.5 text-[13px] font-medium ${tones[tone]}`}>
+    <span
+      className={`inline-flex h-6 items-center rounded-full px-2.5 text-[13px] font-medium ${tones[tone]}`}
+    >
       {children}
     </span>
   );

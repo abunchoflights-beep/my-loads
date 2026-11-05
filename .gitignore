@@ -45,3 +45,12 @@ next-env.d.ts
 supabase/signing_keys.json
 supabase/.temp
 supabase/.branches
+
+# vite+ git hook dispatcher (recreated by `vp config` on npm install)
+.vite-hooks/_
+
+# claude code personal overrides
+.claude/settings.local.json
+
+# local sprint backlog, kept out of git for now
+/backlog.md

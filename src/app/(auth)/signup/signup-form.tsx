@@ -63,7 +63,7 @@ export function SignupForm({ initialRole }: { initialRole: (typeof ROLES)[number
         error={err.password}
       />
       <label className="flex items-start gap-3 text-[15px] text-label-2">
-        <input type="checkbox" name="terms" className="mt-1 size-4 accent-white" />
+        <input type="checkbox" name="terms" className="mt-1 size-4 accent-accent" />
         <span>
           Acepto los{" "}
           <Link href="/legal/terms" className="text-blue">
@@ -77,7 +77,11 @@ export function SignupForm({ initialRole }: { initialRole: (typeof ROLES)[number
         </span>
       </label>
       {err.terms && <p className="text-[13px] text-red">{err.terms}</p>}
-      {state?.error && <p role="alert" className="text-[15px] text-red">{state.error}</p>}
+      {state?.error && (
+        <p role="alert" className="text-[15px] text-red">
+          {state.error}
+        </p>
+      )}
       <Button type="submit" className="w-full" disabled={pending}>
         {pending ? "Creando…" : "Crear cuenta"}
       </Button>

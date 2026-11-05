@@ -4,6 +4,8 @@ Apple dark mode as the base: pure black canvas, white type, grouped surfaces in 
 
 Tokens live in `src/app/globals.css`. Components in `src/components/ui`.
 
+Screen comps for every role (route map with build status, farmer, buyer and carrier flows at 390 px) live on the design canvas [Mis Carguitas UI](https://claude.ai/artifact/G1REX78NGgcb7r1B6rZjfL). It is private to its owner until shared from its Share menu.
+
 ## Principles
 
 1. **Black and white first.** `#000` background, `#fff` primary text and primary buttons. Color is information, not decoration.

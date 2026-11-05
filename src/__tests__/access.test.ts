@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { resolveAccess } from "@/lib/auth/access";
 
 const farmer = { role: "farmer", aal: "aal1" } as const;
@@ -15,7 +15,10 @@ describe("resolveAccess", () => {
   });
 
   it("sends anonymous visitors of private pages to login with next", () => {
-    expect(resolveAccess("/farmer/listings", null)).toEqual({ kind: "redirect", to: "/login?next=%2Ffarmer%2Flistings" });
+    expect(resolveAccess("/farmer/listings", null)).toEqual({
+      kind: "redirect",
+      to: "/login?next=%2Ffarmer%2Flistings",
+    });
   });
 
   it("sends signed-in users from / and /login to their home", () => {

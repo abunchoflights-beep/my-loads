@@ -8,7 +8,13 @@ const COPY: Partial<Record<SignedInViewer["verification"], { text: string; tone:
   suspended: { text: "Tu cuenta está suspendida. Escríbenos para revisarlo.", tone: "text-red" },
 };
 
-export function VerificationBanner({ status, role }: { status: SignedInViewer["verification"]; role: SignedInViewer["role"] }) {
+export function VerificationBanner({
+  status,
+  role,
+}: {
+  status: SignedInViewer["verification"];
+  role: SignedInViewer["role"];
+}) {
   const copy = COPY[status];
   if (!copy || role === "admin") return null;
   return (

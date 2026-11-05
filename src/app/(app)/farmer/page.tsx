@@ -26,8 +26,18 @@ export default async function FarmerHome() {
         }
       />
       <Group title="Hoy">
-        <Row icon={<ReceiptText className="size-4" />} title="Pedidos por responder" trailing={pending.count ?? 0} href="/farmer/orders" />
-        <Row icon={<Sprout className="size-4" />} title="Carguitas publicadas" trailing={published.count ?? 0} href="/farmer/listings" />
+        <Row
+          icon={<ReceiptText className="size-4" />}
+          title="Pedidos por responder"
+          trailing={pending.count ?? 0}
+          href="/farmer/orders"
+        />
+        <Row
+          icon={<Sprout className="size-4" />}
+          title="Carguitas publicadas"
+          trailing={published.count ?? 0}
+          href="/farmer/listings"
+        />
         <Row icon={<Tractor className="size-4" />} title="Mis fincas" href="/farmer/farms" />
       </Group>
     </>

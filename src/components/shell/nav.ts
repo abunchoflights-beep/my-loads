@@ -1,7 +1,11 @@
 import type { AppRole } from "@/lib/auth/access";
 
 // Max 4 tabs on mobile (Apple HIG: 3–5). Account is always last.
-export type NavItem = { href: string; label: string; icon: "home" | "sprout" | "receipt" | "store" | "truck" | "route" | "map" | "user" | "shield" | "check" };
+export type NavItem = {
+  href: string;
+  label: string;
+  icon: "home" | "sprout" | "receipt" | "store" | "truck" | "route" | "map" | "user" | "shield" | "check";
+};
 
 export const NAV: Record<AppRole, NavItem[]> = {
   farmer: [

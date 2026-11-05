@@ -7,7 +7,9 @@ export default async function BuyerOrders() {
   return (
     <>
       <PageHeader title="Pedidos" subtitle="Tus compras, ofertas de flete y entregas." />
-      <SpecPlaceholder issue="S3-03 · S4-03">Pedidos del comprador y ofertas de transportadores</SpecPlaceholder>
+      <SpecPlaceholder issue="S3-03 · S4-03">
+        Pedidos del comprador y ofertas de transportadores
+      </SpecPlaceholder>
     </>
   );
 }

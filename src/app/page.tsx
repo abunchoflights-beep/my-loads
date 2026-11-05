@@ -42,7 +42,8 @@ export default function Landing() {
           <span className="block text-label-2">Sin intermediarios.</span>
         </h1>
         <p className="mt-6 max-w-xl text-[19px] text-label-2 md:text-[21px]">
-          Vende tu carga directo a las plazas y negocios de las ciudades, y consigue el camión en el mismo lugar.
+          Vende tu carga directo a las plazas y negocios de las ciudades, y consigue el camión en el mismo
+          lugar.
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
           <LinkButton href="/signup?role=farmer">Empezar a vender</LinkButton>
